@@ -15,3 +15,5 @@ Database :
 1. Database
 2. npm install --save sequelize
 3. npm install --save mysql2
+
+https://sequelize.org/v5/manual/getting-started.html
