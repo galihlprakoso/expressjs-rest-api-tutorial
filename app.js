@@ -14,8 +14,10 @@ app.use(express.static(path.join(__dirname, 'public')))
 
 const indexRouter = require('./routes/index')
 const authRouter = require('./routes/auth')
+const postRouter = require('./routes/post')
 app.use('/', indexRouter)
 app.use('/auth', authRouter)
+app.use('/post', postRouter)
 
 app.listen(process.env.PORT, function(){
   console.log(`Application is available at port : ${process.env.PORT}`)
