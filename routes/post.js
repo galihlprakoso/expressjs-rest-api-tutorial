@@ -1,9 +1,26 @@
 const express = require('express')
+const jwt = require('../lib/jwt')
 const { checkSchema } = require('express-validator')
-const postValidationSchema = require('./validators/post')
+const postValidator = require('./validators/post')
 const router = express.Router()
 const PostController = require('../controllers/PostController')
 
-// router.post('/create', checkSchema(postValidationSchema), PostController.createPost)
+router.get('/user', jwt.middleware, PostController.getUserPosts)
+
+router.get('/user/:id', jwt.middleware, PostController.getUserPost)
+
+router.post('/user', [
+  postValidator, jwt.middleware
+], PostController.createPost)
+
+router.put('/user/:id', [
+  postValidator, jwt.middleware,
+], PostController.updatePost)
+
+router.delete('/user/:id', jwt.middleware, PostController.deletePost)
+
+router.get('/', PostController.getPosts)
+
+router.get('/:id', PostController.getPost)
 
 module.exports = router

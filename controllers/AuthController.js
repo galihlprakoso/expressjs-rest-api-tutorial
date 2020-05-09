@@ -1,14 +1,11 @@
-const { validationResult } = require('express-validator')
+const validate = require('./utils/validate')
 const hasher = require('../lib/hasher')
 const jwt = require('../lib/jwt')
 const User = require('../database/schemas/User')
 
 module.exports = {
   login: async (req, res) => {
-    const errors = validationResult(req)
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() })
-    }
+    if(!validate(req, res)) return
     const { email, password } = req.body
     const user = await User.findOne({
       where: { email }, limit: 1,
@@ -26,9 +23,9 @@ module.exports = {
         param: 'password',
       }]})
     }
-    res.json({
-      msg: 'Login succeed.',
+    res.json({      
       data: {
+        msg: 'Login succeed.',
         token: jwt.sign(user.get({
           plain: true
         }))
@@ -36,10 +33,7 @@ module.exports = {
     })
   },
   register: async (req, res) => {
-    const errors = validationResult(req)
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() })
-    }
+    if(!validate(req, res)) return
 
     const checkUser = await User.findOne({
       where: { email: req.body.email }, limit: 1,
@@ -54,9 +48,9 @@ module.exports = {
     const user = User.build(req.body)
     try {
       await user.save()
-      res.json({
-        msg: 'Registration succeed.',
+      res.json({        
         data: {
+          msg: 'Registration succeed.',
           token: jwt.sign(user.get({
             plain: true
           }))
@@ -65,5 +59,9 @@ module.exports = {
     } catch (err) {
       res.status(500).json({ errors: [{ msg: err.message }] })
     }
+  },
+  user: async (req, res) => {
+    if(!validate(req, res)) return
+    res.json({ data: { user: req.user }})
   }
 }

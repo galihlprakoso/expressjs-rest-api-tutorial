@@ -1,6 +1,9 @@
 const Post = require('../schemas/Post')
 const User = require('../schemas/User')
 
+User.hasMany(Post)
+Post.belongsTo(User)
+
 const PostSeeder = async () => {
   const users = await User.findAll()
   const post = Post.build({

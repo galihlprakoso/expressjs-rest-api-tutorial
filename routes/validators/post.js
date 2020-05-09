@@ -1,19 +1,22 @@
 const { checkSchema } = require('express-validator')
 
 const postSchema = {
-  title: {
-    errorMessage: 'Title should be at least 3 characters',
-    isLength: { min: 5 },
-    isString: true,
+  title: {    
+    isLength: {
+      options:  { min: 5 },
+      errorMessage: 'Title should be at least 3 characters',
+    },
   },
   content: {
-    errorMessage: 'Content should be at least 5 characters',
-    isLength: { min: 5 },
-    isString: true,
+    isLength: {
+      options:  { min: 5 },
+      errorMessage: 'Content should be at least 5 characters',
+    },
   },
   thumbnail: {
-    errorMessage: 'Thumbnail should be an image',
-    isMimeType: 'image/*',
+    isURL: {
+      errorMessage: 'Thumbnail should be a valid URL',
+    },
   }
 }
 
