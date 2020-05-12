@@ -11,13 +11,15 @@ module.exports = {
     const posts = await Post.findAll({
       include: [{ model: User }]
     })
-    res.json(posts)
+    res.json({
+      data: posts
+    })
   },
   getPost: async (req, res) => {    
     const post = await Post.findOne({ where: { id: req.params.id }, include: [{ model: User }] })
     if(post) {
       return res.json({
-        data: { post }
+        data: post
       })
     }
     res.status(404).json({ errors: [{ msg: 'Post not found' }] })

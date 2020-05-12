@@ -1,0 +1,491 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "Express Rest API Tutorial from Scratch by Ghack Dev.",
+    "version": "1.0.5",
+    "title": "Express REST API - www.ghack.dev",
+    "termsOfService": "https://ghack.dev",
+    "contact": {
+      "email": "admin@localhost"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "host": "localhost:8888",
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "Authentication"
+    }
+  ],
+  "schemes": [
+    "http"
+  ],
+  "paths": {    
+    "/post": {
+      "get": {
+        "tags": [
+          "Public"
+        ],
+        "summary": "All Posts",
+        "description": "",
+        "operationId": "public-posts",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "All posts.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/Post"
+                  }
+                }
+              }
+            }
+          }
+        }        
+      }
+    },
+    "/post/{postID}": {
+      "get": {
+        "tags": [
+          "Public"
+        ],
+        "summary": "One post",
+        "description": "",
+        "operationId": "public-post",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "postID",
+            "in": "path",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "One post.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "object",
+                  "$ref": "#/definitions/Post"
+                }
+              }
+            }
+          }
+        }        
+      }
+    },
+    "/auth/register": {
+      "post": {
+        "tags": [
+          "Authentication"
+        ],
+        "summary": "Register",
+        "description": "",
+        "operationId": "register",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "authentication",
+            "in": "body",
+            "description": "User's email and password",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "email": {
+                  "type": "string"
+                },
+                "password": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Register failed.",
+            "schema": {
+              "$ref": "#/definitions/AuthErrorResponse"
+            }
+          },
+          "200": {
+            "description": "Register succeed.",
+            "schema": {
+              "$ref": "#/definitions/AuthSuccessResponse"
+            }
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "tags": [
+          "Authentication"
+        ],
+        "summary": "Login",
+        "description": "",
+        "operationId": "login",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "credential",
+            "in": "body",
+            "description": "User's credential",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string"
+                },
+                "password": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Login failed.",
+            "schema": {
+              "$ref": "#/definitions/AuthErrorResponse"
+            }
+          },
+          "200": {
+            "description": "Login succeed.",
+            "schema": {
+              "$ref": "#/definitions/AuthSuccessResponse"
+            }
+          }
+        }        
+      }
+    },
+    "/post/user": {
+      "get": {
+        "tags": [
+          "Authenticated User"
+        ],
+        "summary": "All User's Posts",
+        "description": "",
+        "operationId": "user-posts",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "All user's posts.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/Post"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": {
+          "Bearer": []
+        }   
+      },
+      "post": {
+        "tags": [
+          "Authenticated User"
+        ],
+        "summary": "Create post",
+        "description": "",
+        "operationId": "user-create-post",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "post",
+            "in": "body",
+            "required": true,
+            "type": "object",
+            "schema": {
+              "$ref": "#/definitions/Post"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Create post.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "msg": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": {
+          "Bearer": []
+        }   
+      }
+    },
+    "/post/user/{postID}": {
+      "get": {
+        "tags": [
+          "Authenticated User"
+        ],
+        "summary": "User's Post",
+        "description": "",
+        "operationId": "user-post",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "postID",
+            "in": "path",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "One user's post.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "object",
+                  "$ref": "#/definitions/Post"
+                }
+              }
+            }
+          }
+        },
+        "security": {
+          "Bearer": []
+        }   
+      },
+      "put": {
+        "tags": [
+          "Authenticated User"
+        ],
+        "summary": "Update post",
+        "description": "",
+        "operationId": "user-update-post",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "post",
+            "in": "body",
+            "required": true,
+            "type": "object",
+            "schema": {
+              "$ref": "#/definitions/Post"
+            }
+          },
+          {
+            "name": "postID",
+            "in": "path",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Update post.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "msg": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": {
+          "Bearer": []
+        }   
+      },
+      "delete": {
+        "tags": [
+          "Authenticated User"
+        ],
+        "summary": "Delete post",
+        "description": "",
+        "operationId": "user-delete-post",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "postID",
+            "in": "path",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Delete post.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "msg": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": {
+          "Bearer": []
+        }   
+      }
+    }
+  },  
+  "securityDefinitions": {
+    "Bearer": {
+      "type": "apiKey",
+      "in": "header",
+      "name": "Authorization"
+    }
+  },
+  "definitions": {
+    "Post": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "thumbnail": {
+          "type": "string"
+        },
+        "content": {
+          "type": "string"
+        }
+      }
+    },
+    "AuthError": {
+      "type": "object",
+      "properties": {
+        "msg": {
+          "type": "string"
+        },
+        "param": {
+          "type": "string"
+        }
+      }
+    },
+    "AuthErrorResponse": {
+      "type": "object",
+      "properties": {
+        "errors": {
+          "type": "array",
+          "items": {
+            "xml": {
+              "name": "Error"
+            },
+            "$ref": "#/definitions/AuthError"
+          }
+        }
+      }
+    },
+    "AuthSuccessResponse": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "object",
+          "properties": {
+            "msg": {
+              "type": "string"
+            },
+            "token": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  }
+}

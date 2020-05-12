@@ -1,6 +1,5 @@
 const express = require('express')
 const jwt = require('../lib/jwt')
-const { checkSchema } = require('express-validator')
 const postValidator = require('./validators/post')
 const router = express.Router()
 const PostController = require('../controllers/PostController')
