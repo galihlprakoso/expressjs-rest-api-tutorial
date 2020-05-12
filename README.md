@@ -43,6 +43,19 @@
       <li>Securing route</li>
     </ul>
   </li>
+  <li>Testing REST API Using Postman App
+    <ul>
+      <li>Creating collections</li>
+      <li>Request authentication</li>
+      <li>Create request</li>
+      <li>Create post request with data</li>
+    </ul>
+  </li>
+  <li>API Documentation
+    <ul>
+      <li>Using <pre>swagger</pre> library to create API Documentation</li>
+    </ul>
+  </li>
 </ul>
 
 <h2>Requirements :</h2>
@@ -82,3 +95,7 @@
 2. Write post controller
 3. write controllers/utils/validate.js
 4. continue working on post controllers
+
+<h3>Documenting API :</h3>
+1. Install swagger library
+2. Test swagger library
